@@ -9,7 +9,7 @@ export const {
     MONGODB_URI = "",
     REDIS_URI,
     REDIS_TOKEN_EXPIRATION = "",
-    JWT_SECRET,
+    JWT_SECRET = "",
     JWT_EXPIRATION,
     MAIL_HOST,
     MAIL_PORT,
