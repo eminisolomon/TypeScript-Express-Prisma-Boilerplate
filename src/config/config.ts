@@ -7,7 +7,7 @@ export const {
     APP_URL,
     CLIENT_URL,
     MONGODB_URI = "",
-    REDIS_URI,
+    REDIS_URI = "",
     REDIS_TOKEN_EXPIRATION = "",
     JWT_SECRET = "",
     JWT_EXPIRATION,

@@ -13,7 +13,6 @@
     "scratch"
   ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon",
     "start": "yarn run rm:public && cross-env NODE_ENV=production ts-node --files -r tsconfig-paths/register ./src",
     "watch": "yarn run rm:public && cross-env ts-node-dev --files --respawn --inspect -r tsconfig-paths/register ./src",
     "build": "yarn run rm:public && cross-env NODE_ENV=production tsc && tsc-alias && yarn run copy:files",

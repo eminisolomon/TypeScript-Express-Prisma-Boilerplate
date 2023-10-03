@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 
 import { getAccessTokenFromHeaders } from '@/utils/headers'
 import { jwtVerify } from '@/utils/jwt'
-import { userService } from '@/services'
+import { UserService } from '@/services'
 import { redis } from '@/database'
 
 export const authMiddleware = async (
