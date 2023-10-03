@@ -41,7 +41,7 @@
     "@types/express-serve-static-core": "4.17.33",
     "@types/jsonwebtoken": "8.5.9",
     "@types/multer": "1.4.7",
-    "@types/node": "18.8.3",
+    "@types/node": "^20.8.2",
     "@types/nodemailer": "6.4.7",
     "@types/randomstring": "1.1.8",
     "@types/sharp": "0.31.1",
@@ -55,13 +55,14 @@
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-unicorn": "44.0.2",
     "prettier": "2.7.1",
-    "ts-node": "10.9.1",
+    "ts-node": "^10.9.1",
     "ts-node-dev": "2.0.0",
     "tsc-alias": "1.7.0",
     "tsconfig-paths": "4.1.0",
-    "typescript": "4.8.4"
+    "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@prisma/client": "5.3.1",
     "bcrypt": "5.1.0",
     "cors": "2.8.5",
     "dotenv": "16.0.3",
@@ -75,6 +76,7 @@
     "mongoose": "6.6.5",
     "multer": "1.4.5-lts.1",
     "nodemailer": "6.9.1",
+    "prisma": "^5.3.1",
     "randomstring": "1.2.3",
     "redis": "4.3.1",
     "sharp": "0.31.3",

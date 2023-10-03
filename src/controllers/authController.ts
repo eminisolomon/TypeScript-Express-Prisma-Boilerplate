@@ -27,7 +27,7 @@ import { createDateAddDaysFromNow } from '@/utils/dates'
 import { UserMail } from '@/mailer'
 import { createHash } from '@/utils/hash'
 import { redis } from '@/database'
-import { REDIS_TOKEN_EXPIRATION, expirationTime } from '@/config/config';
+import { expirationTime } from '@/config/config';
 
 export const authController = {
   signIn: async (
