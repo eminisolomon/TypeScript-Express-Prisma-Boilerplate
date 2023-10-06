@@ -1,5 +1,3 @@
-import { Model, ObjectId } from 'mongoose'
-
 export interface IMedia {
   originalname: string
   encoding: string
@@ -10,14 +8,5 @@ export interface IMedia {
   size: number
   orderColumn?: number
   refType?: string
-  refId?: ObjectId
+  refId?: string
 }
-
-export type CreateMediaPayload = Omit<
-  IMedia,
-  'refId' | 'refType' | 'orderColumn'
->
-
-export type UpdateMediaPayload = Pick<IMedia, 'refId' | 'refType'>
-
-export type MediaModel = Model<IMedia>

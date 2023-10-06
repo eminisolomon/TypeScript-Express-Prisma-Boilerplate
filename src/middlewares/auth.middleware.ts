@@ -1,9 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
-
-import { getAccessTokenFromHeaders } from '@/utils/headers'
-import { jwtVerify } from '@/utils/jwt'
-import { UserService } from '@/services'
-import { redis } from '@/database'
+import { NextFunction, Request, Response } from 'express';
+import { prisma } from '@/utils/prisma';
+import { getAccessTokenFromHeaders } from '@/utils/headers';
+import { jwtVerify } from '@/utils/jwt';
+import { redis } from '@/database';
 
 export const authMiddleware = async (
   req: Request,
@@ -24,7 +23,10 @@ export const authMiddleware = async (
     )
     if (isAccessTokenExpired) return next()
 
-    const user = await userService.getById(id)
+    const user = await prisma.user.findUnique({
+      where: { id },
+    })
+    
     if (!user) return next()
 
     Object.assign(req, {

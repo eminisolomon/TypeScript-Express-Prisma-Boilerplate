@@ -1,10 +1,8 @@
 import jwt from 'jsonwebtoken'
-import { ObjectId } from 'mongoose'
-
 import { IAccessToken, IJwtUser } from '@/contracts/jwt'
 import { JWT_SECRET, JWT_EXPIRATION } from '@/config/config'
 
-export const jwtSign = (id: ObjectId): IAccessToken => {
+export const jwtSign = (id: number): IAccessToken => {
   const accessToken = jwt.sign({ id }, JWT_SECRET, {
     expiresIn: JWT_EXPIRATION
   })

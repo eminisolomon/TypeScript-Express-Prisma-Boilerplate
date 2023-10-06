@@ -3,7 +3,7 @@ import { join } from 'path'
 import 'dotenv/config'
 
 import '@/infrastructure/logger'
-import { mongoose, redis } from '@/database'
+import { redis } from '@/database'
 import {
   corsMiddleware,
   authMiddleware,
@@ -13,7 +13,6 @@ import { router } from '@/routes'
 import { i18next, i18nextHttpMiddleware } from '@/i18n'
 import { STORAGE_PATH, APP_PORT } from './config/config'
 
-mongoose.run()
 redis.run()
 
 const app: Express = express()
