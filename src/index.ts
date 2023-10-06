@@ -1,35 +1,25 @@
-import express, { Express } from 'express'
-import { join } from 'path'
-import 'dotenv/config'
+import { config as configDotenv } from 'dotenv';
+import server from './server';
+import { printAppInfo } from './utils/print-app-info';
+import appConfig from './config/app.config';
+import prismaClient from '@/lib/prisma';
+import environment from '@/lib/environment';
 
-import '@/infrastructure/logger'
-import { redis } from '@/database'
-import {
-  corsMiddleware,
-  authMiddleware,
-  notFoundMiddleware
-} from '@/middlewares'
-import { router } from '@/routes'
-import { i18next, i18nextHttpMiddleware } from '@/i18n'
-import { STORAGE_PATH, APP_PORT } from './config/config'
+configDotenv();
 
-redis.run()
+server.listen(process.env.PORT, () => {
+  const { port, env, appUrl: _appUrl } = environment;
+  const {
+    api: { basePath, version },
+  } = appConfig;
+  const appUrl = `${_appUrl}:${port}`;
+  const apiUrl = `${appUrl}/${basePath}/${version}/${env}`;
+  printAppInfo(port, env, appUrl, apiUrl);
+});
 
-const app: Express = express()
-
-app.use(
-  join('/', STORAGE_PATH),
-  express.static(join(__dirname, STORAGE_PATH))
-)
-
-app.use(
-  express.json({ limit: '10mb' }),
-  express.urlencoded({ limit: '10mb', extended: true }),
-  corsMiddleware,
-  i18nextHttpMiddleware.handle(i18next),
-  authMiddleware,
-  router,
-  notFoundMiddleware
-)
-
-app.listen(APP_PORT)
+process.on('SIGINT', () => {
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  prismaClient.$disconnect();
+  console.log('Prisma Disconnected.');
+  process.exit(0);
+});

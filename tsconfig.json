@@ -2,29 +2,30 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
+    "lib": [
+      "ESNext"
+    ],
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
-    "strict": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "allowSyntheticDefaultImports": true,
     "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "removeComments": true,
-    "noImplicitAny": true,
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "rootDir": "src",
+    "strictNullChecks": true,
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "src/*"
+      ]
     },
-    "baseUrl": "./src",
-    "rootDir": "./src",
-    "outDir": "./public",
-    "lib": ["ESNext"],
-    "types": ["node"],
-    "typeRoots": ["./node_modules/@types"]
+    "types": [
+      "node",
+      "jest"
+    ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+  ]
 }
