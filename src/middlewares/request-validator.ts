@@ -1,10 +1,10 @@
-import { type ClassConstructor, plainToInstance } from 'class-transformer';
+import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
-import { type Request, type Response, type NextFunction } from 'express';
-import { HttpBadRequestError } from '@/lib/errors';
+import { Request, Response, NextFunction } from 'express';
 import logger from '@/lib/logger';
+import { BadRequestException } from '@/exceptions/BadRequest';
 
-export default class RequestValidator {
+export class RequestValidator {
   static validate = <T>(classInstance: ClassConstructor<T>) => {
     return async (req: Request, _res: Response, next: NextFunction) => {
       const validationErrorText = 'Request validation failed!';
@@ -22,10 +22,10 @@ export default class RequestValidator {
           ]),
         ];
         logger.error(rawErrors);
-        next(new HttpBadRequestError(validationErrorText, rawErrors));
+        next(new BadRequestException(validationErrorText, rawErrors));
       } catch (e) {
         logger.error(e);
-        next(new HttpBadRequestError(validationErrorText, [e.message]));
+        next(new BadRequestException(validationErrorText, [e.message]));
       }
     };
   };

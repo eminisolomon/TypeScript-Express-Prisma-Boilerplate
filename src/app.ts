@@ -4,11 +4,11 @@ import express from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import expressJSDocSwagger from 'express-jsdoc-swagger';
-import home from './home';
-import environment from './lib/environment';
-import expressJSDocSwaggerConfig from './config/express-jsdoc-swagger.config';
-import appConfig from './config/app.config';
-import errorHandler from '@/middlewares/error-handler';
+import home from '@/home';
+import environment from '@/lib/environment';
+import expressJSDocSwaggerConfig from '@/config/swagger';
+import appConfig from '@/config/app.config';
+import errorHandler from '@/middlewares/error.middleware';
 import routes from '@/modules/index';
 import prismaClient from '@/lib/prisma';
 

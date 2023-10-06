@@ -1,11 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { config as configDotenv } from 'dotenv';
-import { cleanEnv } from 'envalid';
+import { cleanEnv, str } from 'envalid';
 import { EnvironmentFile, Environments } from '@/enums/environment.enum';
-import envValidationConfig from '@/config/env-validation.config';
-import { envFileNotFoundError } from '@/utils/helper';
-import { type CommonEnvKeys } from '@/types/environment.type';
+import envValidationConfig from '@/config/env.config';
 import appConfig from '@/config/app.config';
 
 export interface IEnvironment {
@@ -22,9 +20,15 @@ class Environment implements IEnvironment {
   private _env: Environments;
   private _appUrl: string;
 
+  private readonly envNotFoundError = (key: string) =>
+    `Environment variable "${key}" not found in the environment files.`;
+
   constructor() {
     this.port = +process.env.PORT ?? appConfig.defaultPort;
-    this.setEnvironment(process.env.NODE_ENV ?? Environments.DEV);
+    const nodeEnv = process.env.NODE_ENV;
+    const envEnum = Environments[nodeEnv as keyof typeof Environments] ?? Environments.DEV;
+
+    this.setEnvironment(envEnum);
   }
 
   get env() {
@@ -51,14 +55,12 @@ class Environment implements IEnvironment {
     this._appUrl = value;
   }
 
-  private resolveEnvPath(key: CommonEnvKeys): string {
-    // On priority bar, .env.[NODE_ENV] has higher priority than default env file (.env)
-    // If both are not resolved, error is thrown.
+  private resolveEnvPath(key: string): string {
     const rootDir: string = path.resolve(__dirname, '../../');
     const envPath = path.resolve(rootDir, EnvironmentFile[key]);
     const defaultEnvPath = path.resolve(rootDir, EnvironmentFile.DEFAULT);
     if (!fs.existsSync(envPath) && !fs.existsSync(defaultEnvPath)) {
-      throw new Error(envFileNotFoundError(key));
+      throw new Error(this.envNotFoundError(key));
     }
     return fs.existsSync(envPath) ? envPath : defaultEnvPath;
   }

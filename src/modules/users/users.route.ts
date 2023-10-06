@@ -1,40 +1,25 @@
 import { Router } from 'express';
-import Controller from './users.controller';
-import { CreateUserDto } from '@/dto/user.dto';
-import RequestValidator from '@/middlewares/request-validator';
-import { verifyAuthToken } from '@/middlewares/auth';
+import { UserController } from './users.controller';
+import { verifyAuthToken } from '@/middlewares/auth.middleware';
 
-const users: Router = Router();
-const controller = new Controller();
+const users = Router();
+const controller = new UserController();
 
 /**
- * Create user body
- * @typedef {object} CreateUserBody
- * @property {string} email.required - email of user
- * @property {string} name.required - name of user
- * @property {string} cognitoId.required - cognito id
- * @property {string} phone - phone number
- */
-/**
- * User
- * @typedef {object} User
- * @property {string} email - email of user
- * @property {string} name - name of user
- * @property {string} cognitoId - cognito id
- * @property {string} phone - phone number
- */
-/**
- * POST /users/create
- * @summary Create user
+ * GET /users/:userId
+ * @summary Get user by ID
  * @tags users
- * @param {CreateUserBody} request.body.required
- * @return {User} 201 - user created
+ * @param {string} request.params.userId.required - User ID
+ * @return {User} 200 - User object
  */
-users.post(
-  '/create',
-  verifyAuthToken,
-  RequestValidator.validate(CreateUserDto),
-  controller.createUser
-);
+users.get('/:userId', verifyAuthToken, controller.getUser);
 
-export default users;
+/**
+ * GET /users
+ * @summary Get all users
+ * @tags users
+ * @return {User[]} 200 - Array of user objects
+ */
+users.get('/', verifyAuthToken, controller.getUsers);
+
+export { users };

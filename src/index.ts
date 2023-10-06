@@ -1,9 +1,9 @@
 import { config as configDotenv } from 'dotenv';
 import server from './server';
-import { printAppInfo } from './utils/print-app-info';
 import appConfig from './config/app.config';
 import prismaClient from '@/lib/prisma';
 import environment from '@/lib/environment';
+import logger from './lib/logger';
 
 configDotenv();
 
@@ -14,12 +14,13 @@ server.listen(process.env.PORT, () => {
   } = appConfig;
   const appUrl = `${_appUrl}:${port}`;
   const apiUrl = `${appUrl}/${basePath}/${version}/${env}`;
-  printAppInfo(port, env, appUrl, apiUrl);
+  logger.info(`Server is running on port ${port} in ${env} mode.`);
+  logger.info(`App URL: ${appUrl}`);
+  logger.info(`API URL: ${apiUrl}`);
 });
 
 process.on('SIGINT', () => {
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   prismaClient.$disconnect();
-  console.log('Prisma Disconnected.');
+  logger.info('Prisma Disconnected.');
   process.exit(0);
 });
