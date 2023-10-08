@@ -1,44 +1,27 @@
-import util from 'util';
-import { NextFunction, Request, Response } from 'express';
-import { HttpStatusCode } from 'axios';
-import logger from '@/lib/logger';
-import environment from '@/lib/environment';
-import { Exception } from '@/exceptions/Exception';
+import { NextFunction, Request, Response } from "express";
+import { Exception } from "@/exceptions";
+import logger from "@/lib/logger";
 
-interface ErrorBody {
-  success: false;
-  message: string;
-  rawErrors?: string[];
-  stack?: string;
-}
-
-const errorHandler = (
-  err: Exception,
+export const ErrorMiddleware = (
+  error: Exception,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  logger.error(`Request Error:
-        \nError:\n${JSON.stringify(err)}
-        \nHeaders:\n${util.inspect(req.headers)}
-        \nParams:\n${util.inspect(req.params)}
-        \nQuery:\n${util.inspect(req.query)}
-        \nBody:\n${util.inspect(req.body)}`);
+  try {
+    const status: number = error.statusCode || 500;
+    const message: string = error.message || "Something went wrong";
 
-  const status: number = err.statusCode ?? HttpStatusCode.InternalServerError;
-  const errorBody: ErrorBody = {
-    success: false,
-    message: err.message,
-    rawErrors: err.rawErrors,
-  };
-
-  if (environment.isDev()) {
-    errorBody.stack = err.stack;
+    logger.error(
+      `[${req.method}] ${req.path} >> StatusCode:: ${status}, Message:: ${message}`
+    );
+    
+    res.status(status).json({
+      success: false,
+      message,
+      rawErrors: error.rawErrors,
+    });
+  } catch (error) {
+    next(error);
   }
-
-  res.status(status).send(errorBody);
-
-  next();
 };
-
-export default errorHandler;

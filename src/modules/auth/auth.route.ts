@@ -1,7 +1,5 @@
 import { Router } from 'express';
 import { AuthController } from './auth.controller';
-import { CreateUserDto } from '@/dto/auth.dto';
-import { RequestValidator } from '@/middlewares/request-validator';
 
 const auth = Router();
 const controller = new AuthController();
@@ -31,7 +29,6 @@ const controller = new AuthController();
  */
 auth.post(
   '/create',
-  RequestValidator.validate(CreateUserDto),
   controller.createUser
 );
 
