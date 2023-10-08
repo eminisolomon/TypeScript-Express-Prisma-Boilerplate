@@ -8,7 +8,7 @@ import home from '@/home';
 import environment from '@/lib/environment';
 import expressJSDocSwaggerConfig from '@/config/swagger';
 import appConfig from '@/config/app.config';
-import errorHandler from '@/middlewares/error.middleware';
+import { ErrorMiddleware } from '@/middlewares/error.middleware';
 import routes from '@/modules/index';
 import prismaClient from '@/lib/prisma';
 
@@ -48,7 +48,7 @@ class App {
   }
 
   private setErrorHandler(): void {
-    this.express.use(errorHandler);
+    this.express.use(ErrorMiddleware);
   }
 
   private initializeDocs(): void {
